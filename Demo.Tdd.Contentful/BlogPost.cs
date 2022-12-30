@@ -1,16 +1,36 @@
 ﻿using Demo.Tdd.Contentful.Models;
+using System.Text.Json;
 
 namespace Demo.Tdd.Contentful;
 
 public class BlogPost
 {
+	private readonly HttpClient _httpClient;
+
 	public BlogPost(IHttpClientFactory httpClientFactory)
 	{
-
+		_httpClient = httpClientFactory.CreateClient();
+		_httpClient.BaseAddress = new Uri("https://cdn.contentful.com");
 	}
 
 	public async Task<IEnumerable<BlogPostEntry>> ListAsync()
 	{
-		return new List<BlogPostEntry>();
+		string? posts = await _httpClient.GetStringAsync("/placeholder-path");
+
+		var response = JsonSerializer.Deserialize<ContentfulResponse>(posts);
+
+		if (response is null || response.items is null || !response.items.Any())
+		{
+			return new List<BlogPostEntry>();
+		}
+
+		List<BlogPostEntry> blogPosts = new();
+
+		foreach (var blogPostEntry in response.items)
+		{
+			blogPosts.Add(new BlogPostEntry());
+		}
+
+		return blogPosts;
 	}
 }
