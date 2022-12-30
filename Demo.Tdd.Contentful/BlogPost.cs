@@ -15,7 +15,7 @@ public class BlogPost
 
 	public async Task<IEnumerable<BlogPostEntry>> ListAsync()
 	{
-		string? posts = await _httpClient.GetStringAsync("/placeholder-path");
+		string? posts = await _httpClient.GetStringAsync("/spaces/b27mtzlwgnec/environments/production/entries?access_token=dskuhg87hguogj487g84gkh");
 
 		var response = JsonSerializer.Deserialize<ContentfulResponse>(posts);
 
