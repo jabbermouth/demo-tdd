@@ -7,16 +7,18 @@ namespace Demo.Tdd.Contentful;
 public class BlogPost
 {
 	private readonly HttpClient _httpClient;
+	private readonly ContentfulConfig _config;
 
 	public BlogPost(IHttpClientFactory httpClientFactory, IOptions<ContentfulConfig> config)
 	{
+		_config = config.Value;
 		_httpClient = httpClientFactory.CreateClient();
-		_httpClient.BaseAddress = new Uri("https://cdn.contentful.com");
+		_httpClient.BaseAddress = new Uri(_config.BaseUrl ?? "");
 	}
 
 	public async Task<IEnumerable<BlogPostEntry>> ListAsync()
 	{
-		string? posts = await _httpClient.GetStringAsync("/spaces/b27mtzlwgnec/environments/production/entries?access_token=dskuhg87hguogj487g84gkh");
+		string? posts = await _httpClient.GetStringAsync($"/spaces/{_config.SpaceId}/environments/{_config.Environment}/entries?access_token={_config.ApiKeys?.PublishedContent}");
 
 		var response = JsonSerializer.Deserialize<ContentfulResponse>(posts);
 
