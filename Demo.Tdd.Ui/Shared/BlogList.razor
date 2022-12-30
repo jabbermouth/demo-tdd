@@ -1,7 +1,31 @@
-﻿<h3>Blog List</h3>
+﻿@using Demo.Tdd.Contentful;
+@using Demo.Tdd.Contentful.Models;
+@using Markdig;
 
-<p>There are no blogs to display.</p>
+@inject IBlogPost _blogPost;
+
+@if (blogList is null || !blogList.Any())
+{
+    <p>There are no blogs to display.</p>
+}
+else
+{
+    <ul>
+    @foreach (var blogEntry in blogList)
+    {
+        <li>
+            <b>@blogEntry.Title</b>
+            @((MarkupString)Markdown.ToHtml(blogEntry.Summary ?? ""))
+        </li>
+    }
+    </ul>
+}
 
 @code {
+    IEnumerable<BlogPostEntry>? blogList = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        blogList = await _blogPost.ListAsync();
+    }
 }
