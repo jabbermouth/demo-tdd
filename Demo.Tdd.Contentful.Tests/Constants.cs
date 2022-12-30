@@ -1,4 +1,7 @@
-﻿namespace Demo.Tdd.Contentful.Tests;
+﻿using Demo.Tdd.Contentful.Models;
+using Microsoft.Extensions.Options;
+
+namespace Demo.Tdd.Contentful.Tests;
 
 public static class Constants
 {
@@ -104,4 +107,17 @@ public static class Constants
         ]
     }
     """;
+
+	public static IOptions<ContentfulConfig> GetContentfulConfig()
+	{
+		ContentfulConfig contentfulConfig = new()
+		{
+			BaseUrl = "https://api.baseurl.com",
+			SpaceId = "SPACE-ID",
+			Environment = "ENVIRONMENT",
+			ApiKeys = new ContentfulConfigApiKeys() { PublishedContent = "MY-ACCESS-TOKEN" }
+		};
+
+		return Options.Create(contentfulConfig);
+	}
 }

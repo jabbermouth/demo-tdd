@@ -1,4 +1,5 @@
 ﻿using Demo.Tdd.Contentful.Models;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace Demo.Tdd.Contentful;
@@ -7,7 +8,7 @@ public class BlogPost
 {
 	private readonly HttpClient _httpClient;
 
-	public BlogPost(IHttpClientFactory httpClientFactory)
+	public BlogPost(IHttpClientFactory httpClientFactory, IOptions<ContentfulConfig> config)
 	{
 		_httpClient = httpClientFactory.CreateClient();
 		_httpClient.BaseAddress = new Uri("https://cdn.contentful.com");
