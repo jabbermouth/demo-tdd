@@ -11,6 +11,6 @@ public class BlogPost
 
 	public async Task<IEnumerable<BlogPostEntry>> ListAsync()
 	{
-		throw new NotImplementedException();
+		return new List<BlogPostEntry>();
 	}
 }
