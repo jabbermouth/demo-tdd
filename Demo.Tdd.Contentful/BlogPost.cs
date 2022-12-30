@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Demo.Tdd.Contentful;
 
-public class BlogPost
+public class BlogPost : IBlogPost
 {
 	private readonly HttpClient _httpClient;
 	private readonly ContentfulConfig _config;
