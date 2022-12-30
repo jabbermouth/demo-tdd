@@ -2,4 +2,6 @@
 
 public class BlogPostEntry
 {
+	public string? Title { get; set; }
+	public string? Summary { get; set; }
 }
