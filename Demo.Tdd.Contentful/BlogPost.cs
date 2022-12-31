@@ -40,7 +40,14 @@ public class BlogPost : IBlogPost
 
 		foreach (var blogPostEntry in response.items)
 		{
-			blogPosts.Add(new BlogPostEntry());
+			var fields = (JsonElement)blogPostEntry["fields"];
+
+			blogPosts.Add(new BlogPostEntry()
+			{
+				Title = fields.GetProperty("title").GetString() ?? "",
+				Summary = fields.GetProperty("summary").GetString() ?? "",
+				Article = fields.GetProperty("article").GetString() ?? ""
+			});
 		}
 
 		return blogPosts;
