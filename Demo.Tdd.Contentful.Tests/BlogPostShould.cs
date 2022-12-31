@@ -70,4 +70,21 @@ public class BlogPostShould
 		blogPosts.Should().NotBeNull();
 		blogPosts.Should().BeEmpty();
 	}
+
+	[Fact]
+	public async void AListOfBlogsHasPopulatedValues()
+	{
+		// Arrange
+		IHttpClientFactory httpClientFactory = MockFactories.GetStringClient(Constants.RESULT_LIST_POPULATED_TWO);
+		var sut = new BlogPost(httpClientFactory, Constants.GetContentfulConfig());
+
+		// Act
+		var results = await sut.ListAsync();
+
+		// Assert
+		results.Should().NotBeNullOrEmpty();
+		results.First().Title.Should().Be("Test blog article");
+		results.First().Summary.Should().Be("This is my __test__ blog article summary.");
+		results.First().Article.Should().Be("This is the body __with bold__ of my article.");
+	}
 }
