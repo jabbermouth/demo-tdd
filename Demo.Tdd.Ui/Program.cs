@@ -1,3 +1,4 @@
+using Demo.Tdd.Contentful;
 using Demo.Tdd.Contentful.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.Configure<ContentfulConfig>(builder.Configuration.GetSection("Contentful"));
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IBlogPost, BlogPost>();
 
 var app = builder.Build();
 
