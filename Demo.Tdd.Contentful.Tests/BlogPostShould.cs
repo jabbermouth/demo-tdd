@@ -55,4 +55,19 @@ public class BlogPostShould
 			ItExpr.IsAny<CancellationToken>()
 			);
 	}
+
+	[Fact]
+	public async void ReturnEmptyListIfTimeoutOccurs()
+	{
+		// Arrange
+		IHttpClientFactory httpClientFactory = MockFactories.GetTimingOutClient();
+		var sut = new BlogPost(httpClientFactory, Constants.GetContentfulConfig());
+
+		// Act
+		var blogPosts = await sut.ListAsync();
+
+		// Assert
+		blogPosts.Should().NotBeNull();
+		blogPosts.Should().BeEmpty();
+	}
 }

@@ -41,4 +41,22 @@ public static class MockFactories
 
 		return httpClientFactory.Object;
 	}
+
+	public static IHttpClientFactory GetTimingOutClient()
+	{
+		Mock<HttpMessageHandler> httpMessageHandler = new();
+		Mock<IHttpClientFactory> httpClientFactory = new();
+
+		httpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>(
+				"SendAsync",
+				ItExpr.IsAny<HttpRequestMessage>(),
+				ItExpr.IsAny<CancellationToken>()
+			)
+			.Throws<TimeoutException>();
+
+		HttpClient httpClient = new(httpMessageHandler.Object);
+		httpClientFactory.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+		return httpClientFactory.Object;
+	}
 }
