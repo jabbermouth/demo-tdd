@@ -18,7 +18,16 @@ public class BlogPost : IBlogPost
 
 	public async Task<IEnumerable<BlogPostEntry>> ListAsync()
 	{
-		string? posts = await _httpClient.GetStringAsync($"/spaces/{_config.SpaceId}/environments/{_config.Environment}/entries?access_token={_config.ApiKeys?.PublishedContent}");
+		string? posts = null;
+
+		try
+		{
+			posts = await _httpClient.GetStringAsync($"/spaces/{_config.SpaceId}/environments/{_config.Environment}/entries?access_token={_config.ApiKeys?.PublishedContent}");
+		} 
+		catch
+		{
+			return new List<BlogPostEntry>();
+		}
 
 		var response = JsonSerializer.Deserialize<ContentfulResponse>(posts);
 
